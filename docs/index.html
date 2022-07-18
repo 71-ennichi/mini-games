@@ -1,46 +1,53 @@
----
-layout: default
-title: 縁日ミニゲーム集
----
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
     <meta charset="UTF-8">
     <title>縁日ミニゲーム集</title>
     <link href="style.css" rel="stylesheet">
 </head>
 <body>
-<h1>縁日ブラウザミニゲーム集</h1>
+<header>
+    <div class="header-container">
+        <h1 id="title">縁日ミニゲーム集</h1>
+    </div>
+</header>
 <div>
-    <h2>3Dテトリス</h2>
-    <div>
-        <div>
-            <h3>概要</h3>
-            <p>
-                ソビエト社会主義共和国連邦発の脳トレゲームであるテトリスの三次元バージョン。
-            </p>
+    <div class="main-container">
+        <div class="game-container">
+            <h2 class="game-title">3Dテトリス</h2>
+            <div id="tetris-main" class="game-content">
+                <div class="game-general">
+                    <h3>概要</h3>
+                    <p class="game-general-text">
+                        ソビエト社会主義共和国連邦発の脳トレゲームである<a href="https://ja.wikipedia.org/wiki/%E3%83%86%E3%83%88%E3%83%AA%E3%82%B9">テトリス</a>の三次元バージョン。
+                    </p>
+                </div>
+                <div class="game-control">
+                    <h3>操作</h3>
+                    <p class="game-control-text">
+                        現時点ではキーボード操作のみ対応。<br>
+                        ↑↓キーで視点の上下平行移動。←→キーで視点の左右回転移動。<br>
+                        W/S/A/D/Q/Eキーでブロック操作。<br>
+                        W/Sキーで奥/手前の平行移動、A/Dで左右の平行移動。<br>
+                        Q/Eキーで、それぞれ左Roll回転移動と左Yaw回転移動。<br>
+                        Spaceキーで、落下速度を20倍速早送り。<br>
+                        スコアは消したプレーン×100。<br>
+                        完全なフロントエンド実装などでスコアランキングなどは一切なし。<br>
+                    </p>
+                </div>
+                <div class="game-link">
+                    <h3>ゲームリンク</h3>
+                    <p>
+                        プレイにはJavaScriptの実行可能なブラウザが必要。
+                    </p>
+                    <br>
+                    <a href="games/3d-tetris/index.html" id="tetris_link">リンク</a>
+                </div>
+            </div>
         </div>
-        <div>
-            <h3>操作</h3>
-            <p>
-                現時点ではキーボード操作のみ対応。<br>
-                ↑↓キーで視点の上下平行移動。←→キーで視点の左右回転移動。<br>
-                W/S/A/D/Q/Eキーでブロック操作。<br>
-                W/Sキーで奥/手前の平行移動、A/Dで左右の平行移動。<br>
-                Q/Eキーで、それぞれ左Roll回転移動と左Yaw回転移動。<br>
-                Spaceキーで、落下速度を20倍速早送り。<br>
-                スコアは消したプレーン×100。<br>
-                完全なフロントエンド実装などでスコアランキングなどは一切なし。<br>
-            </p>
-        </div>
-        <div>
-            <h3>ゲームリンク</h3>
-            <p>
-                プレイにはJavaScriptの実行可能なブラウザが必要。
-            </p>
-            <a href="games/3d-tetris/index.html" id="tetris_link">リンク</a>
-        </div>
+
     </div>
 </div>
+
 </body>
 </html>
