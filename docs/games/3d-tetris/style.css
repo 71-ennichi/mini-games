@@ -2,7 +2,7 @@
 
 #score_indicator {
     text-align: center;
-    font-size: xx-large;
+    font-size: x-large;
 }
 
 #TetrisScreen {
@@ -32,4 +32,13 @@ p {
 
 a {
     color: #b5e853;
+}
+
+.header-container {
+    text-align: center;
+    margin: 0 auto;
+}
+
+.main-container{
+    text-align: center;
 }
