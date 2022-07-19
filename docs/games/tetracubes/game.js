@@ -15,8 +15,8 @@ const COLOR_LIST = [RED, GRAY, BLUE, CYAN, MAGENTA, YELLOW, PURPLE, ORANGE];
 //keys
 const MOVE_VALUE = {w: 0, d: 1, s: 2, a: 3};
 //game - tetris
-const TETRIS_WIDTH = 5;
-const TETRIS_HEIGHT = 20;
+const GAME_WIDTH = 5;
+const GAME_HEIGHT = 20;
 //game - framework
 const TICK = 60;
 const CAM_ALTITUDE_MAX = 500;
@@ -47,7 +47,7 @@ const score_indication = document.getElementById("score_indication");
 //Rendering Instances (three.js)
 //three.js renderer
 const renderer = new THREE.WebGLRenderer({
-    canvas: document.getElementById("TetrisCanvas")
+    canvas: document.getElementById("game_canvas")
 });
 //scene
 const scene = new THREE.Scene();
@@ -182,7 +182,7 @@ function render_init() {
             vertices = [];
         }
     }
-    for (let i = 0; i <= TETRIS_HEIGHT; i++) {
+    for (let i = 0; i <= GAME_HEIGHT; i++) {
         glVertex3fv([50, 50, 400 - i * 20]);
         glVertex3fv([-50, 50, 400 - i * 20]);
         glVertex3fv([-50, 50, 400 - i * 20]);
@@ -192,7 +192,7 @@ function render_init() {
         glVertex3fv([50, -50, 400 - i * 20]);
         glVertex3fv([50, 50, 400 - i * 20]);
     }
-    for (let i = 0; i < TETRIS_WIDTH; i++) {
+    for (let i = 0; i < GAME_WIDTH; i++) {
         glVertex3fv([-50 + i * 20, 50, 400]);
         glVertex3fv([-50 + i * 20, 50, 0]);
         glVertex3fv([-50 + i * 20, -50, 400]);
@@ -202,7 +202,7 @@ function render_init() {
         glVertex3fv([-50, -50 + i * 20, 400]);
         glVertex3fv([-50, -50 + i * 20, 0]);
     }
-    for (let i = 0; i <= TETRIS_WIDTH; i++) {
+    for (let i = 0; i <= GAME_WIDTH; i++) {
         glVertex3fv([-50 + i * 20, 50, 0]);
         glVertex3fv([-50 + i * 20, -50, 0]);
         glVertex3fv([50, -50 + i * 20, 0]);
@@ -242,13 +242,13 @@ function draw_cube(i, j, k) {
 //Game Initialization
 function game_init() {
     //set block_pos and block_color
-    for (let i = 0; i < TETRIS_HEIGHT; i++) {
+    for (let i = 0; i < GAME_HEIGHT; i++) {
         block_pos.push([]);
         block_color.push([]);
-        for (let j = 0; j < TETRIS_WIDTH; j++) {
+        for (let j = 0; j < GAME_WIDTH; j++) {
             block_pos[i].push([]);
             block_color[i].push([]);
-            for (let k = 0; k < TETRIS_WIDTH; k++) {
+            for (let k = 0; k < GAME_WIDTH; k++) {
                 block_pos[i][j].push([390 - i * 20, -40 + j * 20, -40 + k * 20]);
                 block_color[i][j].push(BLACK);
             }
@@ -259,7 +259,7 @@ function game_init() {
 //Let Blocks Fall One Layer
 function block_fall() {
     for (let block of active_block) {
-        if ((block[0] === TETRIS_HEIGHT - 1) || cubes_not_installable(block[0] + 1, block[1], block[2])) {
+        if ((block[0] === GAME_HEIGHT - 1) || cubes_not_installable(block[0] + 1, block[1], block[2])) {
             freeze(block[0], block[1], block[2]);
         }
     }
@@ -343,7 +343,7 @@ function move(key_action) {
         }
     }
     for (const _ of next_active_block) {
-        if (!(0 <= _[0] && _[0] < TETRIS_HEIGHT && 0 <= _[1] && _[1] < TETRIS_WIDTH && 0 <= _[2] && _[2] < TETRIS_WIDTH)) return -1;
+        if (!(0 <= _[0] && _[0] < GAME_HEIGHT && 0 <= _[1] && _[1] < GAME_WIDTH && 0 <= _[2] && _[2] < GAME_WIDTH)) return -1;
         else if (cubes_not_installable(_[0], _[1], _[2])) return -1;
     }
     for (const _ of active_block) block_color[_[0]][_[1]][_[2]] = BLACK;
@@ -393,28 +393,28 @@ function key_action(key) {
 //Check Scoring
 function check() {
     let accepted_layers = 0;
-    for (let i = 0; i < TETRIS_HEIGHT; i++) {
+    for (let i = 0; i < GAME_HEIGHT; i++) {
         let flag = true;
-        for (let j = 0; j < TETRIS_WIDTH; j++) {
-            for (let k = 0; k < TETRIS_WIDTH; k++) {
+        for (let j = 0; j < GAME_WIDTH; j++) {
+            for (let k = 0; k < GAME_WIDTH; k++) {
                 flag &= cubes_not_installable(i, j, k);
             }
         }
         if (flag) {
-            for (let j = 0; j < TETRIS_WIDTH; j++) {
-                for (let k = 0; k < TETRIS_WIDTH; k++) {
+            for (let j = 0; j < GAME_WIDTH; j++) {
+                for (let k = 0; k < GAME_WIDTH; k++) {
                     block_color[i][j][k] = BLACK;
                 }
             }
             for (let i1 = i; i1 > 0; i1--) {
-                for (let j = 0; j < TETRIS_WIDTH; j++) {
-                    for (let k = 0; k < TETRIS_WIDTH; k++) {
+                for (let j = 0; j < GAME_WIDTH; j++) {
+                    for (let k = 0; k < GAME_WIDTH; k++) {
                         block_color[i1][j][k] = block_color[i1 - 1][j][k];
                     }
                 }
             }
-            for (let j = 0; j < TETRIS_WIDTH; j++) {
-                for (let k = 0; k < TETRIS_WIDTH; k++) {
+            for (let j = 0; j < GAME_WIDTH; j++) {
+                for (let k = 0; k < GAME_WIDTH; k++) {
                     block_color[0][j][k] = BLACK;
                 }
             }
@@ -429,11 +429,11 @@ function freeze(i, j, k) {
     if (array_includes([i, j, k], active_block)) {
         let pos = delete_array_from_array([i, j, k], active_block);
         active_block_mesh.splice(pos, 1);
-        freeze(Math.min(i + 1, TETRIS_HEIGHT - 1), j, k);
+        freeze(Math.min(i + 1, GAME_HEIGHT - 1), j, k);
         freeze(Math.max(i - 1, 0), j, k);
-        freeze(i, Math.min(j + 1, TETRIS_WIDTH - 1), k);
+        freeze(i, Math.min(j + 1, GAME_WIDTH - 1), k);
         freeze(i, Math.max(j - 1, 0), k);
-        freeze(i, j, Math.min(k + 1, TETRIS_WIDTH - 1));
+        freeze(i, j, Math.min(k + 1, GAME_WIDTH - 1));
         freeze(i, j, Math.max(k - 1, 0));
     }
 }
