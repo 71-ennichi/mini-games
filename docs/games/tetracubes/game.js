@@ -31,6 +31,7 @@ let active_block = []; //current active movable blocks
 let active_block_mesh = []; // meshes of active blocks
 let block_color = []; // the color attributes of every place
 let block_pos = []; // matrix used to convert game position to 3d rendering position
+let static_block_mesh = []; //categorized by z pos
 //game - framework
 let score = 0; //game score
 let tick = TICK; //blocks fall down one time in this number of frame
@@ -253,6 +254,7 @@ function game_init() {
                 block_color[i][j].push(BLACK);
             }
         }
+        static_block_mesh.push([]);
     }
 }
 
@@ -406,18 +408,27 @@ function check() {
                     block_color[i][j][k] = BLACK;
                 }
             }
+            for (const mesh of static_block_mesh[i]) {
+                scene.remove(mesh);
+            }
+            static_block_mesh[i] = [];
             for (let i1 = i; i1 > 0; i1--) {
                 for (let j = 0; j < GAME_WIDTH; j++) {
                     for (let k = 0; k < GAME_WIDTH; k++) {
                         block_color[i1][j][k] = block_color[i1 - 1][j][k];
                     }
                 }
+                for (const mesh of static_block_mesh[i1-1]) {
+                    mesh.position.set(mesh.position.x,mesh.position.y,mesh.position.z-20);
+                }
+                static_block_mesh[i1]=static_block_mesh[i1-1];
             }
             for (let j = 0; j < GAME_WIDTH; j++) {
                 for (let k = 0; k < GAME_WIDTH; k++) {
                     block_color[0][j][k] = BLACK;
                 }
             }
+            static_block_mesh[0]=[]
             accepted_layers += 1;
         }
     }
@@ -428,6 +439,7 @@ function check() {
 function freeze(i, j, k) {
     if (array_includes([i, j, k], active_block)) {
         let pos = delete_array_from_array([i, j, k], active_block);
+        static_block_mesh[i].push(active_block_mesh[pos]);
         active_block_mesh.splice(pos, 1);
         freeze(Math.min(i + 1, GAME_HEIGHT - 1), j, k);
         freeze(Math.max(i - 1, 0), j, k);
